@@ -1,45 +1,51 @@
-import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet,Alert} from "react-native";
 import { useRouter } from "expo-router";
+import React, { useState } from "react";
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { cadastrarUser } from "./services/cadastroApi";
 
 export default function Cadastro() {
   const router = useRouter();
-  const [cpf, setCpf] = useState('');
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
-  const [confirmarSenha, setConfirmarSenha] = useState('');
-  const [telefone, setTelefone] = useState('');
 
+ 
+const handleCadastro = async () => {
 
-  const handleCadastro = async () => {
-  if (cpf === '' || nome === '' || email === '' || senha === '' || confirmarSenha === '' || telefone === '') {
-    alert('Erro, Por favor, preencha todos os campos.');
+  if (!nome || !email || !senha) {
+    alert("Preencha todos os campos");
     return;
   }
 
-  if (senha !== confirmarSenha) {
-    alert('Erro, As senhas não coincidem.');
-    return;
-  }
 
   try {
-    const response = await fetch("http://localhost:8080/api/usuarios/cadastro", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ cpf, nome, email, senha, telefone }),
-    });
 
-    if (response.ok) {
-      alert("Sucesso, Cadastro realizado com sucesso!");
-      router.navigate('/componentes/Arquiteto/Login');
+    const data = await cadastrarUser(
+      nome,
+      email,
+      senha
+    );
+
+    if (data.success) {
+
+      alert(data.message);
+
+      router.push("./componentes/Arquiteto/login");
+
     } else {
-      alert("Erro ao cadastrar usuário.");
+
+      alert(data.message || "Erro ao cadastrar");
     }
+
   } catch (error) {
-    alert("Erro de conexão com servidor.");
+
+    console.error(error);
+
+    alert("Erro de conexão com o servidor");
   }
 };
+
+
 
   return (
     <View style={styles.container}>
@@ -51,15 +57,6 @@ export default function Cadastro() {
         value={nome}
         onChangeText={setNome}
       />
-
-      <TextInput
-        style={styles.input}
-        placeholder="CPF"
-        keyboardType="numeric"
-        value={cpf}
-        onChangeText={setCpf}
-      />
-
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -74,22 +71,7 @@ export default function Cadastro() {
         value={senha}
         onChangeText={setSenha}
       />
-
-      <TextInput
-        style={styles.input}
-        placeholder="Confirmar Senha"
-        secureTextEntry
-        value={confirmarSenha}
-        onChangeText={setConfirmarSenha}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Telefone"
-        keyboardType="phone-pad"
-        value={telefone}
-        onChangeText={setTelefone}
-      />
-    
+     
 
       <TouchableOpacity
         style={styles.button}

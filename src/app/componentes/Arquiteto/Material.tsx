@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import axios from 'axios';
+import { useRouter } from 'expo-router';
+import React, { useState } from 'react';
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+const router = useRouter();
 const adicionarMaterial = async () => {
   try {
     const response = await axios.post("jdbc:h2:tcp://localhost:8080/Material", {
@@ -33,7 +35,7 @@ interface Material {
 
 export default function GerenciarMateriais() {
   const [nome, setNome] = useState('');
-  const [fase, setFase] = useState('1 - Fundação');
+  const [fase, setFase] = useState('1 - base');
   const [unidade, setUnidade] = useState('unid');
   const [quantidadeM2, setQuantidadeM2] = useState('');
   const [area, setArea] = useState('12'); 
@@ -75,7 +77,7 @@ export default function GerenciarMateriais() {
       />
 
       <Picker selectedValue={fase} style={styles.input} onValueChange={(itemValue) => setFase(itemValue)}>
-        <Picker.Item label="1 - Fundação" value="1 - Fundação" />
+        <Picker.Item label="1 - Base" value="1 - Base" />
         <Picker.Item label="2 - Estrutura" value="2 - Estrutura" />
         <Picker.Item label="3 - Acabamento" value="3 - Acabamento" />
       </Picker>
@@ -113,6 +115,9 @@ export default function GerenciarMateriais() {
         <TouchableOpacity style={styles.addButton} onPress={adicionarMaterial}>
           <Text style={styles.buttonText}>Adicionar</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.addpButton} onPress={() => router.navigate('/componentes/cliente/Cliente')}>
+          <Text style={styles.buttonText}>Proximo</Text>
+        </TouchableOpacity>
       </View>
 
       {/* Lista de Materiais */}
@@ -149,7 +154,8 @@ const styles = StyleSheet.create({
   cancelButton: { backgroundColor: '#cd1a1a', padding: 12, borderRadius: 8, flex: 1, marginRight: 5 },
   addButton: { backgroundColor: '#27b42c', padding: 12, borderRadius: 8, flex: 1, marginLeft: 5 },
   buttonText: { color: '#f1eded', textAlign: 'center', fontWeight: 'bold' },
-  emptyText: { fontSize: 14, color: '#080707', marginTop: 10 },
-  materialItem: { backgroundColor: '#010101', padding: 10, borderRadius: 8, marginVertical: 5 },
-  materialText: { fontSize: 14, color: '#0a0808' },
+  emptyText: { fontSize: 14, color: '#e6dcdc', marginTop: 10 },
+  materialItem: { backgroundColor: '#786c6c', padding: 10, borderRadius: 8, marginVertical: 5 },
+  materialText: { fontSize: 14, color: '#ede9e9' },
+  addpButton: { backgroundColor: '#272eb4', padding: 12, borderRadius: 8, flex: 1, marginLeft: 5 },
 });

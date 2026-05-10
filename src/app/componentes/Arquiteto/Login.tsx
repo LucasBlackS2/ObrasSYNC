@@ -1,72 +1,89 @@
-import { router } from 'expo-router';
-import { useRoute } from '@react-navigation/native';
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity} from 'react-native';
+import { useRouter } from "expo-router";
+import React, { useState } from "react";
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { loginUsuario } from "../services/api";
 
-export default function App() {
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
-  const route = useRoute();
+export interface LoginProps {}
 
-  const handleLogin = () => {
-    if (email === '' && senha === '') {
-      alert('Login realizado com sucesso!');
-       router.push('./explorer');
-    } else { email!=='Teste@hotmail.com' || senha!=='1234'
-      alert('Email ou senha inválidos');
+export default function Login() {
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+
+  const handleLogin = async () => {
+    if (!email || !senha) {
+      alert("Por favor, preencha todos os campos");
+      return;
     }
-    if (email === '' || senha === '') {
-      alert('Por favor, preencha todos os campos');
+
+    try {
+      const data = await loginUsuario(email, senha);
+
+      if (data.success) {
+        alert(data.message);
+        router.push("./ArquitetoHome");
+      } else {
+        alert(data.message || "Email ou senha inválidos");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Erro de conexão com o servidor");
+      router.push("/componentes/Home/TelaError");
     }
   };
 
   return (
-    <View style={styles.container}>
-        <Text style={styles.title}>ObraSync</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          value={email}
-          onChangeText={setEmail} />
-        <TextInput
-          style={styles.input}
-          placeholder=" Senha"
-          secureTextEntry
-          value={senha}
-          onChangeText={setSenha} />
+   
 
-        <View>
-          <TouchableOpacity style={styles.button} onPress={handleLogin}>
-            <Text style={styles.buttonText}>Entrar</Text>
-          </TouchableOpacity>
-         
-        </View>
-    
-        <View >
-          <TouchableOpacity style={styles.button} onPress={() => router.push('../cadastro')}>
-            <Text style={styles.buttonText}>Cadastro</Text>
-          </TouchableOpacity>
-        </View>
+    <View style={styles.container}>
+      <View style={styles.header}>
+             <TouchableOpacity style={styles.backButton} onPress={() => router.push('./componentes/Arquiteto/Login')}>
+               <Text style={styles.backText} >←</Text>
+             </TouchableOpacity>
+             </View>
+      <Text style={styles.title}>ObraSync</Text>
+
+      <TextInput
+        style={styles.input}
+        placeholder="Email"
+        value={email}
+        onChangeText={setEmail}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Senha"
+        secureTextEntry
+        value={senha}
+        onChangeText={setSenha}
+      />
+
+      <TouchableOpacity style={styles.button} onPress={handleLogin}>
+        <Text style={styles.buttonText}>Entrar</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.button} onPress={() => router.push("/componentes/cadastro")}>
+        <Text style={styles.buttonText}>Cadastro</Text>
+      </TouchableOpacity>
     </View>
   );
 }
-const styles = StyleSheet.create({
+
+const styles = StyleSheet.create({  
   container: {
-    color: '#d9e3e7',
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
     padding: 20,
-    backgroundColor: '#867f7f',
+    backgroundColor: "#867f7f",
   },
   title: {
-    backgroundColor: '#e07038',
-    color: '#0c0706',
+    backgroundColor: "#e07038",
+    color: "#0c0706",
     fontSize: 30,
     padding: 15,
     marginBottom: 20,
-    textAlign: 'center',
-    fontWeight: 'bold',
-    borderColor: '#ea9d45',
+    textAlign: "center",
+    fontWeight: "bold",
+    borderColor: "#ea9d45",
     borderWidth: 10,
     borderRadius: 200,
   },
@@ -74,24 +91,42 @@ const styles = StyleSheet.create({
     height: 50,
     margin: 10,
     padding: 10,
-    borderColor:'#b0bd93',
-    textAlign: 'center',
+    borderColor: "#b0bd93",
+    textAlign: "center",
     borderWidth: 1,
     marginBottom: 15,
-    paddingHorizontal: 10,
     borderRadius: 5,
-    backgroundColor: '#443c3c',
+    backgroundColor: "#443c3c",
+    color: "#fff",
   },
-   button: {
-    backgroundColor: '#007AFF',
+  button: {
+    backgroundColor: "#007AFF",
     padding: 12,
     borderRadius: 8,
-    alignItems: 'center',
-    margin:10,   
-   },
+    alignItems: "center",
+    margin: 10,
+  },
   buttonText: {
-    color: "#000000",
+    color: "#fff",
     fontSize: 16,
+    fontWeight: "bold",
+  },
+   header: {
 
+    alignItems: 'center',
+   
+    paddingHorizontal: 10,
+    paddingVertical: 15,
+  },
+  backButton: {
+    padding: 5,
+    borderRadius: 5,
+    marginEnd: 'auto',
+
+  },
+  backText: {
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: 'bold',
   },
 });

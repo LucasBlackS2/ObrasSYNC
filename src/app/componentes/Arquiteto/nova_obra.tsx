@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
+import React, { useState } from 'react';
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 export default function NovaObra() {
   const router = useRouter();
@@ -25,7 +25,7 @@ export default function NovaObra() {
 
     alert('Sucesso ,Projeto criado!');
 
-    router.push('./Materiais');
+    router.push('./Material');
   };
 
   return (

@@ -1,6 +1,6 @@
-import React from 'react';
 import { router } from 'expo-router';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import React from 'react';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function GerenciarObra() {
   return (
@@ -63,7 +63,7 @@ export default function GerenciarObra() {
       </View>
 
       <TouchableOpacity style={styles.buttonPurple}>
-        <Text style={styles.buttonText}>📦 Adicionar Materiais</Text>
+        <Text style={styles.buttonText}>Adicionar Materiais</Text>
       </TouchableOpacity>
     </ScrollView>
   );

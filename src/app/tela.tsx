@@ -1,6 +1,6 @@
-import React from 'react';
 import { useRouter } from 'expo-router';
-import { View, Text, TouchableOpacity, StyleSheet,Image,ScrollView } from 'react-native';
+import React from 'react';
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function SelecionarPerfil() {
   const router = useRouter();
@@ -92,8 +92,9 @@ const styles = StyleSheet.create({
   },
   user: {
     alignItems:'center',
-    margin: 10,
-    marginTop: -60,
+    justifyContent:'center',
+    height: 50,
+
     fontSize: 26,
     color: '#080808',
     fontWeight: 'bold',
@@ -102,6 +103,7 @@ const styles = StyleSheet.create({
   instruction: {
     alignItems:'center',
     marginTop:10,
+
     paddingHorizontal: 1,
   },
   instructionText: {
@@ -110,8 +112,9 @@ const styles = StyleSheet.create({
     marginTop: -100,
   },
   options: {
-    marginTop: -40,
+    marginTop: 20,
     paddingHorizontal: 15,
+
   },
   optionButton: {
     backgroundColor: '#124fd2',
@@ -133,8 +136,8 @@ const styles = StyleSheet.create({
   flex:1,
   alignItems:'center',
   justifyContent: 'center',
-  margin:70,
-  marginTop:10,
+
+
  },
 titulo:{
   alignItems:'center',

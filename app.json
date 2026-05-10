@@ -1,17 +1,23 @@
 {
   "expo": {
-    "name": "obras",
-    "slug": "obras",
-    "version": "1.0.0",
+    "name": "ObraSync",
+    "slug": "obrasync",
+    "version": "1.0.1",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
-    "scheme": "obras",
+    "icon": "./assets/images/splash-icon.png",
+    "scheme": "obrasync",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "Este aplicativo precisa acessar a câmera para capturar imagens.",
+        "NSPhotoLibraryUsageDescription": "Este aplicativo precisa acessar suas fotos para upload."
+      }
     },
     "android": {
+      "permissions": [
+        "INTERNET"
+      ],
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
@@ -43,6 +49,9 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "apiUrl": "http://10.0.2.2:8080"
     }
   }
 }
