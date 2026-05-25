@@ -1,59 +1,72 @@
 import { Picker } from '@react-native-picker/picker';
-import axios from 'axios';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-const router = useRouter();
-const adicionarMaterial = async () => {
-  try {
-    const response = await axios.post("jdbc:h2:tcp://localhost:8080/Material", {
-      nome: "",
-      valor: "",
-      instalado: false
-    });
-    console.log("Material adicionado:", response.data);
-  } catch (error) {
-    console.error(error);
-  }
-};
-const listarMateriais = async () => {
-  try {
-    const response = await axios.get("jdbc:h2:tcp://localhost:8080/Material");
-    console.log("Materiais:", response.data);
-  } catch (error) {
-    console.error(error);
-  }
-};
+import { cadastrarMaterial } from '../services/apiMaterial';
+
 interface Material {
   nome: string;
   fase: string;
   unidade: string;
-  quantidadeTotal: string;
-  valorTotal: string;
-  precoUnitario: string;
+  quantidadeTotal: number;
+  valorTotal: number;
+  precoUnitario: number;
 }
 
 export default function GerenciarMateriais() {
+  const router = useRouter();
+
   const [nome, setNome] = useState('');
-  const [fase, setFase] = useState('1 - base');
+  const [fase, setFase] = useState('1 - Base');
   const [unidade, setUnidade] = useState('unid');
-  const [quantidadeM2, setQuantidadeM2] = useState('');
-  const [area, setArea] = useState('12'); 
   const [quantidadeTotal, setQuantidadeTotal] = useState('');
   const [valorTotal, setValorTotal] = useState('');
   const [materiais, setMateriais] = useState<Material[]>([]);
 
-
   const adicionarMaterial = () => {
-    if (nome && quantidadeTotal && valorTotal) {
-      const precoUnitario = (parseFloat(valorTotal) / parseFloat(quantidadeTotal)).toFixed(2);
-      const novoMaterial = { nome, fase, unidade, quantidadeTotal, valorTotal, precoUnitario };
-      setMateriais([...materiais, novoMaterial]);
-      setNome('');
-      setQuantidadeM2('');
-      setQuantidadeTotal('');
-      setValorTotal('');
+    if (!nome || !quantidadeTotal || !valorTotal) {
+      alert('Preencha todos os campos obrigatórios!');
+      return;
     }
+
+    const quantidade = parseFloat(quantidadeTotal);
+    const valor = parseFloat(valorTotal);
+
+    if (isNaN(quantidade) || isNaN(valor)) {
+      alert('Quantidade e valor devem ser números válidos.');
+      return;
+    }
+
+    const precoUnitario = valor / quantidade;
+
+    const novoMaterial: Material = {
+      nome,
+      fase,
+      unidade,
+      quantidadeTotal: quantidade,
+      valorTotal: valor,
+      precoUnitario,
+    };
+
+    setMateriais((prev) => [...prev, novoMaterial]);
+
+    // Exemplo de chamada à API
+    cadastrarMaterial({
+      nome,
+      fase,
+      unidade,
+      quantidadeTotal: quantidade.toString(),
+      valorTotal: valor.toString(),
+      precoUnitario: precoUnitario.toString(),
+      instalado: false,
+    });
+
+    // Resetar campos
+    setNome('');
+    setQuantidadeTotal('');
+    setValorTotal('');
+    setUnidade('unid');
+    setFase('1 - Base');
   };
 
   return (
@@ -62,7 +75,7 @@ export default function GerenciarMateriais() {
       <View style={styles.summary}>
         <Text style={styles.summaryText}>Total de Materiais: {materiais.length}</Text>
         <Text style={styles.summaryText}>
-          Custo Total: R$ {materiais.reduce((acc, m) => acc + parseFloat(m.valorTotal || '0'), 0).toFixed(2)}
+          Custo Total: R$ {materiais.reduce((acc, m) => acc + m.valorTotal, 0).toFixed(2)}
         </Text>
       </View>
 
@@ -76,20 +89,21 @@ export default function GerenciarMateriais() {
         onChangeText={setNome}
       />
 
-      <Picker selectedValue={fase} style={styles.input} onValueChange={(itemValue) => setFase(itemValue)}>
+      <Picker selectedValue={fase} style={styles.input} onValueChange={setFase}>
         <Picker.Item label="1 - Base" value="1 - Base" />
         <Picker.Item label="2 - Estrutura" value="2 - Estrutura" />
         <Picker.Item label="3 - Acabamento" value="3 - Acabamento" />
       </Picker>
 
-      <Picker selectedValue={unidade} style={styles.input} onValueChange={(itemValue) => setUnidade(itemValue)}>
+      <Picker selectedValue={unidade} style={styles.input} onValueChange={setUnidade}>
         <Picker.Item label="unid" value="unid" />
         <Picker.Item label="m²" value="m²" />
         <Picker.Item label="kg" value="kg" />
       </Picker>
+
       <TextInput
         style={styles.input}
-        placeholder="Quantidade ,Ex: 10"
+        placeholder="Quantidade, Ex: 10"
         keyboardType="numeric"
         value={quantidadeTotal}
         onChangeText={setQuantidadeTotal}
@@ -102,21 +116,13 @@ export default function GerenciarMateriais() {
         value={valorTotal}
         onChangeText={setValorTotal}
       />
-      {quantidadeTotal && valorTotal ? (
-        <Text style={styles.tip}>
-          Preço unitário: R$ {(parseFloat(valorTotal) / parseFloat(quantidadeTotal)).toFixed(2)} por {(parseFloat(quantidadeTotal) / 0.25).toFixed(2)} {unidade}
-        </Text>
-      ) : null}
 
       <View style={styles.buttonRow}>
-        <TouchableOpacity style={styles.cancelButton}>
+        <TouchableOpacity style={styles.cancelButton} onPress={() => router.back()}>
           <Text style={styles.buttonText}>Cancelar</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.addButton} onPress={adicionarMaterial}>
           <Text style={styles.buttonText}>Adicionar</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.addpButton} onPress={() => router.navigate('/componentes/cliente/Cliente')}>
-          <Text style={styles.buttonText}>Proximo</Text>
         </TouchableOpacity>
       </View>
 
@@ -128,7 +134,8 @@ export default function GerenciarMateriais() {
         materiais.map((m, index) => (
           <View key={index} style={styles.materialItem}>
             <Text style={styles.materialText}>
-              {m.nome} - {m.quantidadeTotal} {m.unidade} - R$ {m.valorTotal} (R$ {m.precoUnitario}/{m.unidade})
+              {m.nome} - {m.quantidadeTotal} {m.unidade} - R$ {m.valorTotal.toFixed(2)} 
+              {' '} (R$ {m.precoUnitario.toFixed(2)}/{m.unidade})
             </Text>
           </View>
         ))
@@ -139,23 +146,15 @@ export default function GerenciarMateriais() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f5f4f4', padding: 16 },
-  summary: { marginBottom: 20 , },
-  summaryText: { 
-  fontSize: 16, 
-  fontWeight: 'bold', 
-  color: '#0a030e' 
-},
+  summary: { marginBottom: 20 },
+  summaryText: { fontSize: 16, fontWeight: 'bold', color: '#0a030e' },
   sectionTitle: { fontSize: 18, fontWeight: 'bold', marginVertical: 10, color: '#4B0082' },
   input: { backgroundColor: '#ede7e7', padding: 10, borderRadius: 8, marginVertical: 5 },
-  tip: { fontSize: 14, color: '#13ce42', marginVertical: 5 },
-  calcButton: { backgroundColor: '#3277de', padding: 10, borderRadius: 8, marginVertical: 5 },
-  calcText: { fontSize: 14, color: '#8d0b0b', marginVertical: 5 },
   buttonRow: { flexDirection: 'row', justifyContent: 'space-between', marginVertical: 10 },
   cancelButton: { backgroundColor: '#cd1a1a', padding: 12, borderRadius: 8, flex: 1, marginRight: 5 },
   addButton: { backgroundColor: '#27b42c', padding: 12, borderRadius: 8, flex: 1, marginLeft: 5 },
   buttonText: { color: '#f1eded', textAlign: 'center', fontWeight: 'bold' },
-  emptyText: { fontSize: 14, color: '#e6dcdc', marginTop: 10 },
+  emptyText: { fontSize: 14, color: '#555', marginTop: 10 },
   materialItem: { backgroundColor: '#786c6c', padding: 10, borderRadius: 8, marginVertical: 5 },
   materialText: { fontSize: 14, color: '#ede9e9' },
-  addpButton: { backgroundColor: '#272eb4', padding: 12, borderRadius: 8, flex: 1, marginLeft: 5 },
 });

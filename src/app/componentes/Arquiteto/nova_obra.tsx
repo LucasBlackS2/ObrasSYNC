@@ -10,22 +10,25 @@ export default function NovaObra() {
   const [tipo, setTipo] = useState('');
 
   const handleCriarObra = () => {
-    if (nome ==='' || area ==='' || dias ==='' || tipo ==='') {
-        alert('Atenção ,Preencha todos os campos antes de criar a obra.');
-      return;
-    }
+  if (nome ==='' || area ==='' || dias ==='' || tipo ==='') {
+    alert('Atenção ,Preencha todos os campos antes de criar a obra.');
+    return;
+  }
 
-    const areaNum = Number(area);
-    const diasNum = Number(dias);
+  const areaNum = Number(area);
+  const diasNum = Number(dias);
 
-    if (Number.isNaN(areaNum) || Number.isNaN(diasNum) || areaNum <= 0 || diasNum <= 0) {
-      alert('Atenção ,Informe área e dias válidos (números maiores que 0).');
-      return;
-    }
+  if (Number.isNaN(areaNum) || Number.isNaN(diasNum) || areaNum <= 0 || diasNum <= 0) {
+    alert('Atenção ,Informe área e dias válidos (números maiores que 0).');
+    return;
+  }
 
-    alert('Sucesso ,Projeto criado!');
+  alert('Sucesso ,Projeto criado!');
 
-    router.push('./Material');
+  router.push({
+    pathname: '/Material',
+    params: { nome, area: areaNum, dias: diasNum, tipo }
+  });
   };
 
   return (

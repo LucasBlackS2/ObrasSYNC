@@ -1,7 +1,8 @@
 import axios from "axios";
+import { API_BASE_URL } from "./config";
 
 const api = axios.create({
-  baseURL: "http://192.168.1.103:8080/cadastro",
+  baseURL: `${API_BASE_URL}/cadastro`,
 });
 
 export async function cadastrarUser(
@@ -12,7 +13,7 @@ export async function cadastrarUser(
   try {
 
     const response = await api.post(
-      "/cadastroUser",
+      "/cadastro/cadastroUser",
       {
         nome,
         email,

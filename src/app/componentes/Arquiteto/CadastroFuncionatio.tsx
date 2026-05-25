@@ -1,18 +1,19 @@
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { cadastrarUser } from "../services/cadastroApi";
+import { funcionarios } from "../../services/FuncionarioApi";
 
-export default function Cadastro() {
+export default function funcionario() {
   const router = useRouter();
   const [nome, setNome] = useState('');
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
+  const [cargo, setCargo] = useState('');
+  const [sexo , setSexo] = useState('');
+  const [idade, setIdade] = useState('');
 
  
-const handleCadastro = async () => {
+const handlefuncionarios = async () => {
 
-  if (!nome || !email || !senha) {
+  if (!nome || !cargo || !sexo || !idade) {
     alert("Preencha todos os campos");
     return;
   }
@@ -20,17 +21,19 @@ const handleCadastro = async () => {
 
   try {
 
-    const data = await cadastrarUser(
+    const data = await funcionarios(
       nome,
-      email,
-      senha
+      cargo,
+      sexo,
+      parseInt(idade, 10)
+
     );
 
     if (data.success) {
 
       alert(data.message);
 
-      router.push("/componentes/Arquiteto/nova_obra");
+      router.push("/ArquitetoHome");
 
     } else {
 
@@ -59,23 +62,27 @@ const handleCadastro = async () => {
       />
       <TextInput
         style={styles.input}
-        placeholder="Email"
-        keyboardType="email-address"
-        value={email}
-        onChangeText={setEmail}
+        placeholder="Cargo"
+        value={cargo}
+        onChangeText={setCargo}
       />
       <TextInput
         style={styles.input}
-        placeholder="Senha"
-        secureTextEntry
-        value={senha}
-        onChangeText={setSenha}
+        placeholder="Sexo"
+        value={sexo}
+        onChangeText={setSexo}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Idade"
+        value={idade}
+        onChangeText={setIdade}
       />
      
 
       <TouchableOpacity
         style={styles.button}
-        onPress={handleCadastro}
+        onPress={handlefuncionarios}
       >
         <Text style={styles.buttonText}>Registrar</Text>
       </TouchableOpacity>

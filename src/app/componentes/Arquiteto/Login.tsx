@@ -1,7 +1,7 @@
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { loginUsuario } from "../services/api";
+import { loginUsuario } from "../../services/api";
 
 export interface LoginProps {}
 
@@ -21,7 +21,7 @@ export default function Login() {
 
       if (data.success) {
         alert(data.message);
-        router.push("./ArquitetoHome");
+        router.push("/ArquitetoHome");
       } else {
         alert(data.message || "Email ou senha inválidos");
       }
@@ -37,7 +37,7 @@ export default function Login() {
 
     <View style={styles.container}>
       <View style={styles.header}>
-             <TouchableOpacity style={styles.backButton} onPress={() => router.push('./componentes/Arquiteto/Login')}>
+             <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
                <Text style={styles.backText} >←</Text>
              </TouchableOpacity>
              </View>

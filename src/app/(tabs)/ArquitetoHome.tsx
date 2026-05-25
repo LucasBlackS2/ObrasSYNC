@@ -1,15 +1,33 @@
 
-import { router } from 'expo-router';
-import React from 'react';
+import { useRouter } from 'expo-router';
+import React from "react";
+import { FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+interface Funcionario {
+  id: string;
+  nome: string;
+  cargo: string;
+  sexo: string;
+  foto: string;
+}
 
 export default function GerenciarObra() {
+  const router = useRouter();
+  const renderItem = ({ item }: { item: Funcionario }) => (
+    <View style={styles.employeeCard}>
+      <Image source={{ uri: item.foto }} style={styles.foto} />
+      <View style={styles.info}>
+        <Text style={styles.nome}>{item.nome}</Text>
+        <Text style={styles.cargo}>{item.cargo}</Text>
+        <Text style={styles.sexo}>{item.sexo}</Text>
+      </View>
+    </View>
+  );
+
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.title}>Adicionar Materiais</Text>
-      <Text style={styles.subtitle}></Text>
+      <Text style={styles.subtitle}>Gerencie seu cronograma e materiais.</Text>
 
       <View style={styles.progressBox}>
         <View style={styles.progressBar}>
@@ -30,18 +48,6 @@ export default function GerenciarObra() {
         </View>
       </View>
 
-      <View style={styles.tabContainer}>
-        {['Materiais', 'Cronograma', 'Extras', 'Gráficos'].map((tab, index) => (
-          <Text key={index} style={[styles.tab, tab === 'Materiais' && styles.activeTab]}>
-            {tab}
-          </Text>
-        ))}
-      </View>
-
-      <TouchableOpacity style={styles.buttonPurple}>
-        <Text style={styles.buttonText}onPress={() => router.navigate('/componentes/Arquiteto/Material')}>Gerenciar Materiais</Text>
-      </TouchableOpacity>
-
       <View style={styles.cardContainer}>
         <View style={styles.card}>
           <Text style={styles.cardTitle}>Total</Text>
@@ -57,16 +63,22 @@ export default function GerenciarObra() {
         </View>
       </View>
 
-      <View style={styles.emptyBox}>
-        <Text style={styles.emptyTitle}>Nenhum material cadastrado</Text>
-        <Text style={styles.emptyText}>
-          Adicione materiais com valores para começar a gerenciar sua obra.
-        </Text>
-      </View>
-
-      <TouchableOpacity style={styles.buttonPurple}>
-        <Text style={styles.buttonText}> Adicionar Materiais</Text>
+      <TouchableOpacity
+        style={styles.buttonPurple}
+        onPress={() => router.push('/componentes/Arquiteto/CadastroFuncionatio')}
+      >
+        <Text style={styles.buttonText}>Cadastrar Funcionário</Text>
       </TouchableOpacity>
+
+      <View style={styles.emptyBox}>
+        <Text style={styles.emptyTitle}>Funcionários Cadastrados</Text>
+        <FlatList
+          data={[]}
+          keyExtractor={(item) => item.id}
+          renderItem={renderItem}
+          contentContainerStyle={styles.listContent}
+        />
+      </View>
     </ScrollView>
   );
 }
@@ -76,7 +88,6 @@ const styles = StyleSheet.create({
   title: { fontSize: 24, fontWeight: 'bold', color: '#333' },
   subtitle: { fontSize: 14, color: '#666', marginBottom: 20 },
   progressBox: { backgroundColor: '#e0f0ff', padding: 15, borderRadius: 10 },
-  progressLabel: { fontSize: 16, fontWeight: '600' },
   progressBar: {
     height: 10,
     backgroundColor: '#ccc',
@@ -94,9 +105,6 @@ const styles = StyleSheet.create({
   subProgressBox: { width: '48%', backgroundColor: '#fff', padding: 10, borderRadius: 8 },
   subProgressLabel: { fontSize: 14, color: '#333' },
   subProgressValue: { fontSize: 16, fontWeight: 'bold', color: '#007bff' },
-  tabContainer: { flexDirection: 'row', justifyContent: 'space-around', marginVertical: 10 },
-  tab: { fontSize: 14, color: '#888' },
-  activeTab: { color: '#007bff', fontWeight: 'bold' },
   buttonPurple: {
     backgroundColor: '#6c63ff',
     padding: 12,
@@ -121,6 +129,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 10,
   },
-  emptyTitle: { fontSize: 16, fontWeight: 'bold', color: '#333' },
+  emptyTitle: { fontSize: 16, fontWeight: 'bold', color: '#333', marginBottom: 10 },
   emptyText: { fontSize: 14, color: '#666', textAlign: 'center', marginTop: 5 },
+  list: { width: '100%' },
+  listContent: { paddingBottom: 10 },
+  employeeCard: {
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 10,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  foto: { width: 60, height: 60, borderRadius: 30, marginRight: 12 },
+  info: { flex: 1 },
+  nome: { fontSize: 16, fontWeight: 'bold', color: '#333' },
+  cargo: { fontSize: 14, color: '#666' },
+  sexo: { fontSize: 14, color: '#007bff' },
 });
+          

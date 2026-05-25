@@ -38,8 +38,8 @@ export default function GerenciarObra() {
         ))}
       </View>
 
-      <TouchableOpacity style={styles.buttonPurple}>
-        <Text style={styles.buttonText}onPress={() => router.navigate('/componentes/Arquiteto/Material')}>Gerenciar Materiais</Text>
+      <TouchableOpacity style={styles.buttonPurple} onPress={() => router.push('/Material')}>
+        <Text style={styles.buttonText}>Gerenciar Materiais</Text>
       </TouchableOpacity>
 
       <View style={styles.cardContainer}>
