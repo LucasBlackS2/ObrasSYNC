@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-
+import { novaObras } from '../../services/obras';
 export default function NovaObra() {
   const router = useRouter();
   const [nome, setNome] = useState('');
@@ -9,27 +9,55 @@ export default function NovaObra() {
   const [dias, setDias] = useState('');
   const [tipo, setTipo] = useState('');
 
-  const handleCriarObra = () => {
-  if (nome ==='' || area ==='' || dias ==='' || tipo ==='') {
-    alert('Atenção ,Preencha todos os campos antes de criar a obra.');
+  const handleCriarObra = async () => {
+  if (
+    nome.trim() === '' ||
+    area.trim() === '' ||
+    dias.trim() === '' ||
+    tipo.trim() === ''
+  ) {
+    alert('Preencha todos os campos.');
     return;
   }
 
   const areaNum = Number(area);
   const diasNum = Number(dias);
 
-  if (Number.isNaN(areaNum) || Number.isNaN(diasNum) || areaNum <= 0 || diasNum <= 0) {
-    alert('Atenção ,Informe área e dias válidos (números maiores que 0).');
+  if (
+    Number.isNaN(areaNum) ||
+    Number.isNaN(diasNum) ||
+    areaNum <= 0 ||
+    diasNum <= 0
+  ) {
+    alert('Área e dias devem ser números maiores que zero.');
     return;
   }
 
-  alert('Sucesso ,Projeto criado!');
+  try {
+    await novaObras({
+      nome,
+      metragem: areaNum,
+      dias: diasNum,
+      tipoProjeto: tipo,
+    });
 
-  router.push({
-    pathname: '/Material',
-    params: { nome, area: areaNum, dias: diasNum, tipo }
-  });
-  };
+    alert('Projeto criado com sucesso!');
+
+    router.push({
+      pathname: '/Material',
+      params: {
+        nome,
+        area: areaNum,
+        dias: diasNum,
+        tipo,
+      },
+    });
+
+  } catch (error) {
+    console.error(error);
+    alert('Erro ao salvar obra.');
+  }
+};
 
   return (
     <View style={styles.container}>

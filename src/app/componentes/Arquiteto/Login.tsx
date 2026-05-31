@@ -41,7 +41,7 @@ export default function Login() {
                <Text style={styles.backText} >←</Text>
              </TouchableOpacity>
              </View>
-      <Text style={styles.title}>ObraSync</Text>
+      <Text style={styles.title}>ObrasSync</Text>
 
       <TextInput
         style={styles.input}
@@ -73,17 +73,17 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     padding: 20,
-    backgroundColor: "#867f7f",
+    backgroundColor: "#000000",
   },
   title: {
-    backgroundColor: "#e07038",
+    backgroundColor: "#b75321",
     color: "#0c0706",
     fontSize: 30,
     padding: 15,
     marginBottom: 20,
     textAlign: "center",
     fontWeight: "bold",
-    borderColor: "#ea9d45",
+    borderColor: "#fbfaf9",
     borderWidth: 10,
     borderRadius: 200,
   },
@@ -91,13 +91,13 @@ const styles = StyleSheet.create({
     height: 50,
     margin: 10,
     padding: 10,
-    borderColor: "#b0bd93",
+    borderColor: "#7a9d2d",
     textAlign: "center",
     borderWidth: 1,
     marginBottom: 15,
     borderRadius: 5,
-    backgroundColor: "#443c3c",
-    color: "#fff",
+    backgroundColor: "#110f0f",
+    color: "#eee9e9",
   },
   button: {
     backgroundColor: "#007AFF",

@@ -26,7 +26,7 @@ export default function SelecionarPerfil() {
       <Text style={styles.user}>Bem-vindo {user?.nome || ''}</Text>
       
       <Text style={styles.titulo}>
-        ObraSync
+        ObrasSync
       </Text>
 </View>
       {/* Texto de instrução */}
@@ -59,13 +59,13 @@ export default function SelecionarPerfil() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#706d6d',
+    backgroundColor: '#eeeaea',
   
   },
   header: {
 
     alignItems: 'center',
-    backgroundColor: '#6A1B9A', // Roxo
+    backgroundColor: '#eeeaea', // Roxo
     paddingHorizontal: 10,
     paddingVertical: 15,
   },
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
 
   },
   backText: {
-    color: '#fff',
+    color: '#111111',
     fontSize: 20,
     fontWeight: 'bold',
   },

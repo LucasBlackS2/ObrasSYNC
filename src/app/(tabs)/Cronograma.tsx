@@ -1,7 +1,8 @@
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { Dimensions, ScrollView, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { Alert, Dimensions, ScrollView, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
+import { atualizarEtapa } from '../services/cronograma';
 
 export default function CronogramaScreen() {
   const router = useRouter();
@@ -19,12 +20,52 @@ export default function CronogramaScreen() {
     "Finalização"
   ];
 
-  const toggleStep = (index: number) => {
-    const newProgress = [...progress];
-    newProgress[index] = !newProgress[index]; // alterna concluído/não concluído
-    setProgress(newProgress);
-  };
+const toggleStep = (index: number) => {
+  Alert.alert(
+    "Confirmar Etapa",
+    `Deseja marcar "${steps[index]}" como ${
+      progress[index] ? "não concluída" : "concluída"
+    }?`,
+    [
+      {
+        text: "Cancelar",
+        style: "cancel",
+      },
+      {
+        text: "Confirmar",
+        onPress: async () => {
+          try {
+            const novoStatus = !progress[index];
 
+            const newProgress = [...progress];
+            newProgress[index] = novoStatus;
+
+            setProgress(newProgress);
+
+            await atualizarEtapa(
+              index + 1,      // id da etapa no backend
+              index + 1,      // passo/etapa
+              steps[index],   // nomeEtapa
+              novoStatus      // concluída ou não
+            );
+
+            Alert.alert(
+              "Sucesso",
+              `Etapa "${steps[index]}" atualizada com sucesso!`
+            );
+          } catch (error) {
+            console.error(error);
+
+            Alert.alert(
+              "Erro",
+              "Não foi possível atualizar essa etapa."
+            );
+          }
+        },
+      },
+    ]
+  );
+};
   const completedCount = progress.filter(Boolean).length;
   const percent = (completedCount / steps.length) * 100;
 

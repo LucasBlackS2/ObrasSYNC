@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Alert, FlatList, Image, StyleSheet, Text, View } from "react-native";
 
+
 interface Funcionario {
   id: string;
   nome: string;
@@ -16,7 +17,7 @@ export default function Funcionarios() {
    
     const carregarFuncionarios = async () => {
       try {
-        const response = await fetch("http://localhost:8080/funcionarios"); 
+        const response = await fetch(`${API_BASE_URL}/funcionarios`); 
   
         if (response.ok) {
           const data = await response.json();

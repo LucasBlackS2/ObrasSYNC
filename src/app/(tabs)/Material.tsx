@@ -89,13 +89,13 @@ export default function GerenciarMateriais() {
         onChangeText={setNome}
       />
 
-      <Picker selectedValue={fase} style={styles.input} onValueChange={setFase}>
+      <Picker selectedValue={fase} style={styles.inputt} onValueChange={setFase}>
         <Picker.Item label="1 - Base" value="1 - Base" />
         <Picker.Item label="2 - Estrutura" value="2 - Estrutura" />
         <Picker.Item label="3 - Acabamento" value="3 - Acabamento" />
       </Picker>
 
-      <Picker selectedValue={unidade} style={styles.input} onValueChange={setUnidade}>
+      <Picker selectedValue={unidade} style={styles.inputt} onValueChange={setUnidade}>
         <Picker.Item label="unid" value="unid" />
         <Picker.Item label="m²" value="m²" />
         <Picker.Item label="kg" value="kg" />
@@ -145,16 +145,78 @@ export default function GerenciarMateriais() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f5f4f4', padding: 16 },
-  summary: { marginBottom: 20 },
-  summaryText: { fontSize: 16, fontWeight: 'bold', color: '#0a030e' },
-  sectionTitle: { fontSize: 18, fontWeight: 'bold', marginVertical: 10, color: '#4B0082' },
-  input: { backgroundColor: '#ede7e7', padding: 10, borderRadius: 8, marginVertical: 5 },
-  buttonRow: { flexDirection: 'row', justifyContent: 'space-between', marginVertical: 10 },
-  cancelButton: { backgroundColor: '#cd1a1a', padding: 12, borderRadius: 8, flex: 1, marginRight: 5 },
-  addButton: { backgroundColor: '#27b42c', padding: 12, borderRadius: 8, flex: 1, marginLeft: 5 },
-  buttonText: { color: '#f1eded', textAlign: 'center', fontWeight: 'bold' },
-  emptyText: { fontSize: 14, color: '#555', marginTop: 10 },
-  materialItem: { backgroundColor: '#786c6c', padding: 10, borderRadius: 8, marginVertical: 5 },
-  materialText: { fontSize: 14, color: '#ede9e9' },
+  container: { 
+    flex: 1, 
+    backgroundColor: '#f5efef',
+    padding: 16
+     },
+  summary: { 
+    marginBottom: 20 
+  },
+
+  summaryText: {
+     fontSize: 16, 
+     fontWeight: 'bold', 
+     color: '#0a030e' 
+    },
+  sectionTitle: { 
+    fontSize: 18, 
+    fontWeight: 'bold', 
+    marginVertical: 10,
+     color: '#080808' 
+    },
+  input: { 
+    backgroundColor: '#0e0c0c',
+    color: '#f7f4f8', 
+    padding: 10, 
+    borderRadius: 8, 
+    marginVertical: 5
+   },
+  inputt: { 
+    backgroundColor: '#0e0c0c',
+     color: '#64148d',
+      padding: 10,
+        borderRadius: 8,
+          marginVertical: 5
+      },
+  buttonRow: { 
+    flexDirection: 'row',
+     justifyContent: 'space-between', 
+     marginVertical: 10 ,
+
+    },
+  cancelButton: { 
+    backgroundColor: '#cd1a1a', 
+    padding: 12,
+     borderRadius: 8,
+      flex: 1,
+       marginRight: 5
+       },
+  addButton: { 
+    backgroundColor: '#27b42c',
+     padding: 12,
+      borderRadius: 8,
+       flex: 1,
+        marginLeft: 5 
+      },
+  buttonText: { 
+    color: '#f1eded',
+     textAlign: 'center', 
+     fontWeight: 'bold'
+     },
+  emptyText: { 
+    fontSize: 14, 
+    color: '#555', 
+    marginTop: 10 
+  },
+  materialItem: {
+     backgroundColor: '#786c6c',
+      padding: 10,
+       borderRadius: 8,
+        marginVertical: 5 
+      },
+  materialText: {
+     fontSize: 14,
+      color: '#ede9e9' 
+    },
 });
