@@ -2,6 +2,7 @@ import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { funcionarios } from "../../services/FuncionarioApi";
+import Loading from "../Loading";
 
 export default function Funcionario() {
   const router = useRouter();
@@ -9,6 +10,19 @@ export default function Funcionario() {
   const [cargo, setCargo] = useState('');
   const [sexo , setSexo] = useState('');
   const [idade, setIdade] = useState('');
+  const [loading, setLoading] = useState(true);
+
+React.useEffect(() => {
+  const timer = setTimeout(() => {
+    setLoading(false);
+  }, 2000); // simula carregamento por 2 segundos
+
+  return () => clearTimeout(timer); // limpa o timer se o componente for desmontado
+}, []);
+
+if (loading) {
+  return <Loading />;
+}
 
   const handlefuncionarios = async () => {
     if (!nome || !cargo || !sexo || !idade) {
@@ -38,7 +52,7 @@ export default function Funcionario() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Cadastro</Text>
+      <Text style={styles.title}>Cadastro de Funcionario</Text>
 
       <TextInput
         style={styles.input}
@@ -97,17 +111,17 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     justifyContent: 'center',
-    backgroundColor: '#0a0909',
+    backgroundColor: '#f0ecec',
   },
   title: {
-    color: '#f3ebeb',
+    color: '#0f0d0d',
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
     textAlign: 'center',
   },
   label: {
-    color: '#f3ebeb',
+    color: '#1f1010',
     fontSize: 18,
     marginBottom: 10,
     textAlign: 'center',
@@ -121,8 +135,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 15,
     borderRadius: 5,
-    backgroundColor: "#0b0b0b",
-    color: "#eae4e4",
+    backgroundColor: "#bfbaba",
+    color: "#0b0808",
   },
   sexoContainer: {
     flexDirection: "row",

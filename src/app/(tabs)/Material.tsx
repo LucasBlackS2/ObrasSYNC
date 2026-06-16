@@ -1,6 +1,7 @@
+import Loading from '@/componentes/Loading';
 import { Picker } from '@react-native-picker/picker';
 import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { cadastrarMaterial } from '../services/apiMaterial';
 
@@ -22,6 +23,19 @@ export default function GerenciarMateriais() {
   const [quantidadeTotal, setQuantidadeTotal] = useState('');
   const [valorTotal, setValorTotal] = useState('');
   const [materiais, setMateriais] = useState<Material[]>([]);
+  const [loading, setLoading] = useState(true);
+
+useEffect(() => {
+  const timer = setTimeout(() => {
+    setLoading(false);
+  }, 2000); // simula carregamento por 2 segundos
+
+  return () => clearTimeout(timer); // limpa o timer se o componente for desmontado
+}, []);
+
+if (loading) {
+  return <Loading />;
+}
 
   const adicionarMaterial = () => {
     if (!nome || !quantidadeTotal || !valorTotal) {
@@ -50,7 +64,6 @@ export default function GerenciarMateriais() {
 
     setMateriais((prev) => [...prev, novoMaterial]);
 
-    // Exemplo de chamada à API
     cadastrarMaterial({
       nome,
       fase,
@@ -61,7 +74,7 @@ export default function GerenciarMateriais() {
       instalado: false,
     });
 
-    // Resetar campos
+    
     setNome('');
     setQuantidadeTotal('');
     setValorTotal('');
@@ -71,7 +84,7 @@ export default function GerenciarMateriais() {
 
   return (
     <ScrollView style={styles.container}>
-      {/* Resumo */}
+     
       <View style={styles.summary}>
         <Text style={styles.summaryText}>Total de Materiais: {materiais.length}</Text>
         <Text style={styles.summaryText}>
@@ -79,7 +92,7 @@ export default function GerenciarMateriais() {
         </Text>
       </View>
 
-      {/* Formulário */}
+  
       <Text style={styles.sectionTitle}>Adicionar Material</Text>
 
       <TextInput
@@ -147,7 +160,7 @@ export default function GerenciarMateriais() {
 const styles = StyleSheet.create({
   container: { 
     flex: 1, 
-    backgroundColor: '#f5efef',
+    backgroundColor: '#efecec',
     padding: 16
      },
   summary: { 
@@ -157,23 +170,23 @@ const styles = StyleSheet.create({
   summaryText: {
      fontSize: 16, 
      fontWeight: 'bold', 
-     color: '#0a030e' 
+     color: '#080608' 
     },
   sectionTitle: { 
     fontSize: 18, 
     fontWeight: 'bold', 
     marginVertical: 10,
-     color: '#080808' 
+     color: '#050404' 
     },
   input: { 
-    backgroundColor: '#0e0c0c',
-    color: '#f7f4f8', 
+    backgroundColor: '#605e5e',
+    color: '#000000', 
     padding: 10, 
     borderRadius: 8, 
     marginVertical: 5
    },
   inputt: { 
-    backgroundColor: '#0e0c0c',
+    backgroundColor: '#140d0d',
      color: '#64148d',
       padding: 10,
         borderRadius: 8,
@@ -214,6 +227,7 @@ const styles = StyleSheet.create({
       padding: 10,
        borderRadius: 8,
         marginVertical: 5 
+        
       },
   materialText: {
      fontSize: 14,

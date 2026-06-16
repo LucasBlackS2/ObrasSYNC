@@ -2,46 +2,64 @@ import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { loginUsuario } from "../../services/api";
-
+import Loading from "../Loading";
 export interface LoginProps {}
 
 export default function Login() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+const [loading, setLoading] = useState(true);
 
-  const handleLogin = async () => {
-    if (!email || !senha) {
-      alert("Por favor, preencha todos os campos");
-      return;
-    }
+React.useEffect(() => {
+  const timer = setTimeout(() => {
+    setLoading(false);
+  }, 2000); // simula carregamento por 2 segundos
 
-    try {
-      const data = await loginUsuario(email, senha);
+  return () => clearTimeout(timer); // limpa o timer se o componente for desmontado
+}, []);
 
-      if (data.success) {
-        alert(data.message);
-        router.push("/ArquitetoHome");
-      } else {
-        alert(data.message || "Email ou senha inválidos");
+if (loading) {
+  return <Loading />;
+}
+  let tentativasLogin = 0;
+
+const handleLogin = async () => {
+  if (!email || !senha) {
+    alert("Por favor, preencha todos os campos");
+    return;
+  }
+
+  try {
+    const data = await loginUsuario(email, senha);
+
+    if (data.success) {
+      alert(data.message);
+      router.push("/ArquitetoHome");
+      tentativasLogin = 0; // zera tentativas em caso de sucesso
+    } else {
+      alert(data.message || "Email ou senha inválidos");
+      tentativasLogin++;
+      if (tentativasLogin >= 3) {
+        router.push("/componentes/Home/TelaError"); // redireciona após 3 falhas
       }
-    } catch (error) {
-      console.error(error);
-      alert("Erro de conexão com o servidor");
-      router.push("/componentes/Home/TelaError");
     }
-  };
+  } catch (error) {
+    console.error(error);
+    alert("Erro de conexão com o servidor");
+    tentativasLogin++;
+    if (tentativasLogin >= 3) {
+      router.push("/componentes/Home/TelaError"); // redireciona após 3 falhas
+    }
+  }
+};
 
   return (
    
 
     <View style={styles.container}>
-      <View style={styles.header}>
-             <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-               <Text style={styles.backText} >←</Text>
-             </TouchableOpacity>
-             </View>
-      <Text style={styles.title}>ObrasSync</Text>
+     
+      <Text style={styles.title}>ObraSync</Text>
 
       <TextInput
         style={styles.input}
@@ -73,7 +91,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     padding: 20,
-    backgroundColor: "#000000",
+    backgroundColor: "#a09a9a",
   },
   title: {
     backgroundColor: "#b75321",
@@ -91,13 +109,13 @@ const styles = StyleSheet.create({
     height: 50,
     margin: 10,
     padding: 10,
-    borderColor: "#7a9d2d",
+    borderColor: "#0b0e05",
     textAlign: "center",
     borderWidth: 1,
     marginBottom: 15,
     borderRadius: 5,
-    backgroundColor: "#110f0f",
-    color: "#eee9e9",
+    backgroundColor: "#545151",
+    color: "#000000",
   },
   button: {
     backgroundColor: "#007AFF",

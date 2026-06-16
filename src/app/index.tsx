@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router';
-import React, {useEffect, useRef, type PropsWithChildren} from 'react';
-import {Animated, Text, View, type ViewStyle, Image} from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { Animated, Image, View } from 'react-native';
 
 // You can then use your `FadeInView` in place of a `View` in your components:
 export default ()=> {
@@ -31,10 +31,10 @@ export default ()=> {
       <Image
         source={require('./page/img/logo.png')}
         style={{
-          position: 'absolute',
-          width: '100%',
+          position:'center',
           height: '100%',
-          resizeMode: 'cover',
+          width: '100%',
+          resizeMode: 'contain',
         }}
       />
 
@@ -52,14 +52,18 @@ export default ()=> {
       {/* Conteúdo sobreposto à imagem */}
       <View
         style={{
-          flex: 1,
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
           alignItems: 'center',
           justifyContent: 'center',
           backgroundColor:'rgba(0, 0, 0, 0.75)',
         }}>
         <Animated.Text
           style={{
-            fontSize: 32, // Texto menor
+            fontSize: 50, // Texto menor
             textAlign: 'center',
             color: 'white',
             fontWeight: 'bold',
@@ -68,7 +72,7 @@ export default ()=> {
             textShadowRadius: 5,
             opacity: fadeAnim,
           }}>
-          ObrasSync
+          ObraSync
         </Animated.Text>
       </View>
     </View>

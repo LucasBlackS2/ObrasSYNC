@@ -129,8 +129,8 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   img:{
-    height:300,
-    width:300,
+    height:250,
+    width:250,
   },
  containerIma:{
   flex:1,

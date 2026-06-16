@@ -1,3 +1,4 @@
+import Loading from '@/componentes/Loading';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { Alert, Dimensions, ScrollView, StyleSheet, Text, TouchableOpacity } from 'react-native';
@@ -19,6 +20,19 @@ export default function CronogramaScreen() {
     "Acabamentos",
     "Finalização"
   ];
+  const [loading, setLoading] = useState(true);
+
+React.useEffect(() => {
+  const timer = setTimeout(() => {
+    setLoading(false);
+  }, 2000); // simula carregamento por 2 segundos
+
+  return () => clearTimeout(timer); // limpa o timer se o componente for desmontado
+}, []);
+
+if (loading) {
+  return <Loading />;
+}
 
 const toggleStep = (index: number) => {
   Alert.alert(

@@ -11,8 +11,8 @@ import {
   View,
 } from "react-native";
 
+import Loading from '@/componentes/Loading';
 import { API_BASE_URL } from "../services/config";
-
 interface Funcionario {
   id: number;
   nome: string;
@@ -24,7 +24,6 @@ interface Funcionario {
 export default function GerenciarObra() {
   const router = useRouter();
   const [funcionarios, setFuncionarios] = useState<Funcionario[]>([]);
-
   useEffect(() => {
     const carregarFuncionarios = async () => {
       try {
@@ -61,9 +60,27 @@ export default function GerenciarObra() {
       </View>
     </View>
   );
+  const [loading, setLoading] = useState(true);
 
+React.useEffect(() => {
+  const timer = setTimeout(() => {
+    setLoading(false);
+  }, 2000); // simula carregamento por 2 segundos
+
+  return () => clearTimeout(timer); // limpa o timer se o componente for desmontado
+}, []);
+
+if (loading) {
+  return <Loading />;
+}
   return (
+    
     <ScrollView style={styles.container}>
+      <View style={styles.header}>
+             <TouchableOpacity style={styles.backButton} onPress={() => router.push("/componentes/Arquiteto/nova_obra2")}>
+               <Text style={styles.backText} >+ Novo Projeto</Text>
+             </TouchableOpacity>
+             </View>
       <Text style={styles.title}>Gerenciar Obra</Text>
       <View style={styles.progressBox}>
         <View style={styles.progressBar}>
@@ -75,8 +92,7 @@ export default function GerenciarObra() {
               },
             ]}
           />
-        </View>
-
+             </View>
         <Text style={styles.progressText}>0%</Text>
         <Text style={styles.progressDetails}>
                  </Text>
@@ -320,5 +336,36 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#007bff",
     marginTop: 2,
+  },
+   header: {
+
+    alignItems: 'center',
+    backgroundColor: '#6c63ff',
+    paddingHorizontal: 10,
+    paddingVertical: 15,
+    borderRadius: 8,
+    marginBottom: 20,
+    padding: 10,
+    height: 70,
+    width: 200,
+
+  },
+  backButton: {
+    padding: 5,
+    borderRadius: 5,
+    marginEnd: 'auto',
+
+  },
+  backText: {
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: 'bold',
+    alignSelf: 'center',
+    
+  },
+  iconButton: {
+    padding: 10,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

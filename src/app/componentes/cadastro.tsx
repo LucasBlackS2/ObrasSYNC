@@ -2,6 +2,7 @@ import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { cadastrarUser } from "../services/cadastroApi";
+import Loading from "./Loading";
 
 export default function Cadastro() {
   const router = useRouter();
@@ -44,12 +45,25 @@ const handleCadastro = async () => {
     alert("Erro de conexão com o servidor");
   }
 };
+const [loading, setLoading] = useState(true);
+
+React.useEffect(() => {
+  const timer = setTimeout(() => {
+    setLoading(false);
+  }, 2000); // simula carregamento por 2 segundos
+
+  return () => clearTimeout(timer); // limpa o timer se o componente for desmontado
+}, []);
+
+if (loading) {
+  return <Loading />;
+}
 
 
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Cadastro</Text>
+      <Text style={styles.title}>Faça seu Cadastro</Text>
 
       <TextInput
         style={styles.input}
@@ -91,11 +105,11 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     justifyContent: 'center',
-    backgroundColor: '#0d0d0d',
+    backgroundColor: '#f6f1f1',
   },
   title: {
     fontSize: 24,
-    color:"#f4efef",
+    color:"#0f0303",
     fontWeight: 'bold',
     marginBottom: 20,
     textAlign: 'center',
@@ -104,13 +118,13 @@ const styles = StyleSheet.create({
     height: 50,
     margin: 10,
     padding: 10,
-    borderColor: "#7a9d2d",
+    borderColor: "#151514",
     textAlign: "center",
     borderWidth: 1,
     marginBottom: 15,
     borderRadius: 5,
-    backgroundColor: "#110f0f",
-    color: "#eee9e9",
+    backgroundColor: "#726e6e",
+    color: "#0e0d0d",
   },
   button: {
     backgroundColor: '#007AFF',

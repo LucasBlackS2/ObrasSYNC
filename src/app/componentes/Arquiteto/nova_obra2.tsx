@@ -59,7 +59,7 @@ export default function NovaObra() {
     alert('Erro ao salvar obra.');
   }
 };
-const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
 React.useEffect(() => {
   const timer = setTimeout(() => {
@@ -74,13 +74,7 @@ if (loading) {
 }
 
   return (
-    
     <View style={styles.container}>
-      <View style={styles.header}>
-                   <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-                     <Text style={styles.backText} >←</Text>
-                   </TouchableOpacity>
-                   </View>
       <Text style={styles.title}>Oque Voce Deseja Criar?</Text>
 
       <TextInput
@@ -120,6 +114,9 @@ if (loading) {
       <TouchableOpacity style={styles.button} onPress={handleCriarObra}>
         <Text style={styles.buttonText}>Criar Obra</Text>
       </TouchableOpacity>
+       <TouchableOpacity style={styles.button} onPress={() => router.push('/ArquitetoHome')}>
+              <Text style={styles.buttonText}>Voltar</Text>
+     </TouchableOpacity>
     </View>
   );
 }
@@ -139,11 +136,11 @@ const styles = StyleSheet.create({
     color: '#003366',
   },
   input: {
-    backgroundColor: '#949796',
-    color: '#545151',
+    backgroundColor: '#40a56f',
+    color: '#333',
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#0d0a0a',
+    borderColor: '#bf0f0f',
     paddingHorizontal: 10,
     marginBottom: 15,
     height: 40,
@@ -179,31 +176,5 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 18,
     fontWeight: 'bold',
-  },
-    header: {
-
-    alignItems: 'center',
-    
-    paddingHorizontal: 10,
-    paddingVertical: 15,
-    borderRadius: 8,
-    marginBottom: 20,
-    padding: 10,
-    height: 100,
-    width: 200,
-
-  },
-  backButton: {
-    padding: 5,
-    borderRadius: 5,
-    marginEnd: 'auto',
-
-  },
-  backText: {
-    color: '#060202',
-    fontSize: 20,
-    fontWeight: 'bold',
-    alignSelf: 'center',
-    
   },
 });
